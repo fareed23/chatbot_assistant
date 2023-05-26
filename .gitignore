@@ -44,5 +44,5 @@ app.*.map.json
 /android/app/release
 
 
-.gitignore
-lib/secret_key.dart
+# .gitignore
+# lib/secret_key.dart
