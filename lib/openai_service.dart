@@ -66,7 +66,7 @@ class OpenAIService {
           "messages": messages,
         }),
       );
-      // print(response.body);
+      print(response.body);
       if (response.statusCode == 200) {
         String content =
             jsonDecode(response.body)['choices'][0]['messages']['content'];
