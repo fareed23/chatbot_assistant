@@ -1,2 +1,2 @@
-lib/secret_key
-colors
+.gitignore
+lib/secret_key.dart
