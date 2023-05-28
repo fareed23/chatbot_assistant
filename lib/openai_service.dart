@@ -25,7 +25,7 @@ class OpenAIService {
           ],
         }),
       );
-      print(response.body);
+      // print(response.body);
       if (response.statusCode == 200) {
         String content =
             jsonDecode(response.body)['choices'][0]['messages']['content'];
@@ -66,7 +66,7 @@ class OpenAIService {
           "messages": messages,
         }),
       );
-      print(response.body);
+      // print(response.body);
       if (response.statusCode == 200) {
         String content =
             jsonDecode(response.body)['choices'][0]['messages']['content'];
@@ -85,6 +85,36 @@ class OpenAIService {
   }
 
   Future<String> dallEAPI(String prompt) async {
-    return 'DALL-E';
+    messages.add({
+      'role': 'user',
+      'content': prompt,
+    });
+    try {
+      final response = await http.post(
+        Uri.parse('https://api.openai.com/v1/chat/completions'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $openAIAPIKey'
+        },
+        body: jsonEncode({
+          "prompt": prompt,
+          'n': 1, // one image only if multiple images will use listview.builder
+        }),
+      );
+      // print(response.body);
+      if (response.statusCode == 200) {
+        String imageUrl = jsonDecode(response.body)['data'][0]['url'];
+        imageUrl = imageUrl.trim();
+
+        messages.add({
+          'role': 'assistant',
+          'content': imageUrl,
+        });
+        return imageUrl;
+      }
+      return 'An internal error occurred';
+    } catch (e) {
+      return e.toString();
+    }
   }
 }
